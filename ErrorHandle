@@ -1,0 +1,11 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/stat.h>
+#include<errno.h>
+#include<string.h>
+
+void create__directory(const char *directory){
+int result =mkdir(directory,0777);
+if(result == 0){
+printf("directory '%s' create successfully.\n",directory);
+}else

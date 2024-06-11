@@ -1,0 +1,24 @@
+while true;do
+echo "1.Add"
+echo "2.delete"
+echo "3.view"
+echo "4.Exit"
+read -p "Enter your choice:" choice
+case $choice in
+1)
+echo "Adding..."
+;;
+2)
+echo "deleting..."
+;;
+3)
+echo "viewing..."
+;;
+echo "Exiting..."
+break
+;;
+*)
+echo "Invalid choice.please try again."
+;;
+esac
+done

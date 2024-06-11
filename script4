@@ -1,0 +1,27 @@
+traverse_directory() {
+    local dir="$1"
+    # Use find command to list all files in the directory and its subdirectories
+    find "$dir" -type f -print0 | while IFS= read -r -d '' file; do
+        # Get the size of the file
+        size=$(du -h "$file" | cut -f1)
+        # Display the name and size of the file
+        echo "File: $file | Size: $size"
+    done
+}
+
+# Main function
+main() {
+    local directory="$1"
+    # Check if the directory exists
+    if [ -d "$directory" ]; then
+        # Call the traverse_directory function with the specified directory
+        traverse_directory "$directory"
+    else
+        echo "Error: Directory '$directory' not found."
+        exit 1
+    fi
+}
+
+# Call the main function with the directory path as argument
+main "$1"
+

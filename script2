@@ -1,0 +1,16 @@
+FILES =$(find . -maxdepth 1 -type f -name 'T*')
+if[-z"$FILES"then
+echo"No files starting with 'T'found  in the current direction."
+exit 1
+fi
+
+for FILE in $FILES;do
+chmod o-w"$FILE"
+echo"changed permissions of 
+ILES=$(ls T*)
+
+for FILE in $FILES; do
+chmod g+rwx "$FILE"
+echo"changes group permissions to RWX for $FILE"
+done
+

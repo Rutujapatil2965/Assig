@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Threshold values (adjust these as needed)
+CPU_THRESHOLD=90
+MEMORY_THRESHOLD=90
+DISK_THRESHOLD=90
+
+# Log file
+LOG_FILE="system_monitor.log"
+
+# Function to log system resources
+log_resources() {
+    echo "Timestamp: $(date)" >> "$LOG_FILE"
+    echo "CPU Usage: $(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')" >> "$LOG_FILE"
+    echo "Memory Usage: $(free -m | awk '/Mem/{printf "%.2f%", $3/$2*100}')" >> "$LOG_FILE"
+    echo "Disk Usage: $(df -h | awk '$NF=="/"{printf "%s", $5}')" >> "$LOG_FILE"
+    echo "----------------------------------------" >> "$LOG_FILE"
+}
+
+# Function to check resource thresholds and alert
+check_thresholds() {
+    if [[ $(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}') -gt $CPU_THRESHOLD ]]; then
+        echo "High CPU usage detected!" >> "$LOG_FILE"
+    fi
+
+    if [[ $(free -m | awk '/Mem/{printf "%.2f", $3/$2*100}') -gt $MEMORY_THRESHOLD ]]; then
+        echo "High memory usage detected!" >> "$LOG_FILE"
+    fi
+
+    if [[ $(df -h | awk '$NF=="/"{printf "%s", $5}' | sed 's/%//') -gt $DISK_THRESHOLD ]]; then
+        echo "High disk usage detected!" >> "$LOG_FILE"
+    fi
+}
+
+# Main loop
+while true; do
+    log_resources
+    check_thresholds
+    sleep 60 # Adjust the interval as needed (in seconds)
+done
+

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Check if directory argument is provided
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <directory>"
+    exit 1
+fi
+
+# Check if directory exists
+if [ ! -d "$1" ]; then
+    echo "Error: Directory '$1' does not exist."
+    exit 1
+fi
+
+# Directory to backup
+backup_dir="$1"
+
+# Destination directory for backup
+backup_location="/path/to/backup/directory"
+
+# Create backup directory if it doesn't exist
+mkdir -p "$backup_location"
+
+# Timestamp
+timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
+
+# Compress files and create backup
+backup_file="$backup_location/backup_$timestamp.tar.gz"
+tar -czvf "$backup_file" "$backup_dir"
+
+echo "Backup created: $backup_file"
+
